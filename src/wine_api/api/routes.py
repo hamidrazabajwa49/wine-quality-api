@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get('/health')
 def health(request: Request) -> dict:
-    return {"status":"OK", "model_version": request.app.state.predictor.version}
+    return {"status":"ok", "model_version": request.app.state.predictor.version}
 
 @router.get("/model-info")
 def model_info(request: Request) -> dict:
@@ -19,4 +19,4 @@ def model_info(request: Request) -> dict:
 def predict(body: PredictRequest, request: Request) -> PredictResponse:
     predictor = request.app.state.predictor
     quality = predictor.predict(body.model_dump())
-    return PredictResponse(quality=round(quality,3), model_version=predictor.version)
+    return PredictResponse(quality=round(quality,2), model_version=predictor.version)
