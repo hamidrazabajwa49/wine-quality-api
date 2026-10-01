@@ -44,8 +44,18 @@ def main() -> None:
     metrics.update(n_train=len(X_train), n_test=len(X_test))
     log.info("metrics: %s", metrics)
 
+    feature_ranges = {
+        f: [round(float(X_train[f].min()), 4), round(float(X_train[f].max()), 4)] for f in FEATURES
+    }
+    Path(settings.model_path).parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(
-        {"pipeline": pipeline, "features": FEATURES, "version": __version__, "metrics": metrics},
+        {
+            "pipeline": pipeline,
+            "features": FEATURES,
+            "version": __version__,
+            "metrics": metrics,
+            "feature_ranges": feature_ranges,
+        },
         settings.model_path,
     )
     Path(settings.metrics_path).parent.mkdir(parents=True, exist_ok=True)
